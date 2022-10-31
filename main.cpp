@@ -1,57 +1,80 @@
 #include <iostream>
 #include <stdlib.h>
-
+#include <cstring>
+#include <chrono>
+#include <thread>
 // using std::cout;
-#define display_size_x 20
-#define display_size_y 20
+#define size_x 20
+#define size_y 20
 
-// TODO optimize array display output speed add different sleep function
-void print_display(char display[display_size_y][display_size_x]){
-    // draw display borders
-    for (int i = 0; i < display_size_y; i++)
+void draw(char *display[20][20])
+{
+    // time in miliseconds
+    int time_scale = 250;
+
+    std::string line0 = "";
+
+    // convert array to single string
+    for (int i = 0; i < size_y; i++)
     {
-        display[0][i]='x';
-        display[i][0]='x';
-        display[display_size_y-1][i]='x';
-        display[i][display_size_x-1]='x';
-        
-    }
-    // output display 
-     for (int i = 0; i < display_size_y; i++){
-        std::cout << std::endl;
-        for (int j = 0; j < display_size_x; j++)
+        for (int j = 0; j < size_x; j++)
         {
-            std::cout << "  " << display[i][j];
+            line0 = line0 + (*display[i][j]) + "  ";
         }
+        line0 += "\n";
     }
-    // delay 50ms   
+
+    // output display array in string line0
+    std::cout << line0 << std::endl;
+
+    // delay 50ms
     std::cout.flush();
-    _sleep(33);
+    std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
     system("CLS");
 }
 
 /*
 TODO add fruit spawn logic
-TODO add keyboard inputs 
+TODO add keyboard inputs
 TODO add snake movement logic, passtrough borders
 TODO snake lenght changes, eating
 */
 int main(void)
-    {
-    char display[display_size_y][display_size_x];
+{
+    char display[size_y][size_x];
+    char *display_ptr[size_y][size_x];
     int display_size = sizeof(display) / sizeof(display[0]);
-     //display fill
-    for (int i = 1; i < display_size; i++)
+
+    // initialize display_ptr
+    for (int i = 0; i < display_size; i++)
     {
-        for (int j = 1; j < display_size; j++)
+        for (int j = 0; j < display_size; j++)
         {
-            display[i][j] = '.';
+            display_ptr[i][j] = &display[i][j];
         }
     }
+
+    // draw display borders
+    for (int i = 0; i < size_y; i++)
+    {
+        *display_ptr[0][i] = 'x';
+        *display_ptr[i][0] = 'x';
+        *display_ptr[size_y - 1][i] = 'x';
+        *display_ptr[i][size_x - 1] = 'x';
+    }
+
+    // display fill
+    for (int i = 1; i < display_size - 1; i++)
+    {
+        for (int j = 1; j < display_size - 1; j++)
+        {
+            *display_ptr[i][j] = '.';
+        }
+    }
+    int i = 0;
     while (1)
-    {    
-       
-    
-    print_display(display);
+    {
+        std::cout << "frame: " << i++ << std::endl;
+        draw(display_ptr);
     }
 }

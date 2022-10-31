@@ -129,4 +129,19 @@ CMakeFiles/snake_cpp.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/bits/basic_ios.tcc \
  C:/msys64/mingw64/include/c++/12.2.0/bits/ostream.tcc \
  C:/msys64/mingw64/include/c++/12.2.0/istream \
- C:/msys64/mingw64/include/c++/12.2.0/bits/istream.tcc
+ C:/msys64/mingw64/include/c++/12.2.0/bits/istream.tcc \
+ C:/msys64/mingw64/include/c++/12.2.0/cstring \
+ C:/msys64/mingw64/include/string.h \
+ C:/msys64/mingw64/include/sec_api/string_s.h \
+ C:/msys64/mingw64/include/c++/12.2.0/chrono \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/chrono.h \
+ C:/msys64/mingw64/include/c++/12.2.0/ratio \
+ C:/msys64/mingw64/include/c++/12.2.0/limits \
+ C:/msys64/mingw64/include/c++/12.2.0/ctime \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/parse_numbers.h \
+ C:/msys64/mingw64/include/c++/12.2.0/thread \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/std_thread.h \
+ C:/msys64/mingw64/include/c++/12.2.0/tuple \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/unique_ptr.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/this_thread_sleep.h
