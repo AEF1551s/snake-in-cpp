@@ -4,12 +4,24 @@
 #include <chrono>
 #include <thread>
 #include <cstdlib>
+#include <conio.h>
 
 #define size_x 20
 #define size_y 20
 
-void draw(char *display[20][20], int time_scale)
-{
+/*
+class or struct snake to store snake head, tail and list for snake
+*/
+
+/*
+TODO
+Change time_scale to a global clock
+*/
+int time_scale=500;
+
+enum direction {up, down, left, right, ni};
+
+void draw(char *display[20][20]){
     std::string line0 = "";
 
     // convert array to single string
@@ -24,11 +36,10 @@ void draw(char *display[20][20], int time_scale)
 
     // output display array in string line0
     std::cout << line0 << std::endl;
-
-    std::cout.flush();
     // time scale
     std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
     system("CLS");
+    std::cout.flush();
 }
 
 void spawn_fruit(char *display[20][20], bool eaten)
@@ -40,22 +51,42 @@ void spawn_fruit(char *display[20][20], bool eaten)
     // if snake has eaten fruit, spawn another; previous fruit was deleted by snake head.
 }
 
-void input()
-{
-    // input gets user keys, then outputs nice enums for snake function to use.
+direction kb_input(){
+    char input='0';
+
+    if (_kbhit())
+    {
+       input = (char)_getch();
+    }
+
+    switch (input)
+    {
+    case 'w':
+        return up;
+
+    case 's':
+        return down;
+
+    case 'a':
+        return left;
+
+    case 'd':
+        return right;
+
+    default:
+        return ni;
+    } 
 }
 
-void snake()
-{
+void snake(direction dirctn){
     /*
     snake gets directions, then moves. if snake has eaten a fruit then snake lenght++.
     if snake crashes into itself then game over, return some value
     move snake trough borders
-    */ 
+    */
 }
 
-void display_fill(char *display[20][20])
-{
+void display_fill(char *display[20][20]){
 
     // draw display borders
     for (int i = 0; i < size_y; i++)
@@ -96,7 +127,10 @@ int main(void)
 
     while (1)
     {
-        std::cout << "frame: " << i++ << std::endl;
-        draw(display_ptr, 20);
+        // std::cout << "frame: " << i++ << std::endl;
+        std::cout << kb_input() << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
+        // draw(display_ptr);
+
     }
 }
