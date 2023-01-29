@@ -237,11 +237,22 @@ int main(void)
     snake snake;
     snake.add_display(display_ptr);
     snake.spawn();
+
+    direction user_input = right;
+    direction *user_input_ptr=&user_input;
+    direction temp;
     // obligati
 
     while (1)
     {
-        std::cout << kb_input() << std::endl;
+        temp = kb_input();
+        if (temp != ni)
+        {
+            *user_input_ptr = temp;
+        }
+
+        std::cout << user_input << std::endl;
+
         draw(display_ptr);
         snake.move();
         snake.draw();
