@@ -5,58 +5,174 @@
 #include <thread>
 #include <cstdlib>
 #include <conio.h>
+#include <list>
 
-#define size_x 20
-#define size_y 20
+int time_scale = 100;
 
-/*
-class or struct snake to store snake head, tail and list for snake
-*/
+enum direction
+{
+    up,
+    down,
+    left,
+    right,
+    ni
+};
 
-/*
-TODO
-Change time_scale to a global clock
-*/
-int time_scale=500;
+class snake
+{
+private:
+    std::list<char *> body;
+    char *display_ptr[20][20];
 
-enum direction {up, down, left, right, ni};
+public:
+    void add_display(char *input[20][20])
+    {
+        // add display array so class knows address of every location
+        for (int i = 0; i < 20; i++)
+        {
+            for (int j = 0; j < 20; j++)
+            {
+                display_ptr[i][j] = input[i][j];
+            }
+        }
+    }
 
-void draw(char *display[20][20]){
+    void spawn()
+    {
+        // body.push_front(display_ptr[rand() % 18 + 1][rand() % 18 + 1]);
+        body.push_front(display_ptr[8][8]);
+        body.push_front(display_ptr[7][8]);
+    }
+
+    void grow()
+    {
+        // check if next move is on fruit.
+        // if so then fruit become part of snake
+    }
+
+    void draw()
+    {
+        for (std::list<char *>::iterator ptr = body.begin(); ptr != body.end(); ptr++)
+            **ptr = 'o';
+    }
+
+    void check_collision()
+    {
+        // check collision
+    }
+
+    void move()
+    {
+        // can move down/up only if already is moving left/right
+        // can move left/rifht if only is moving down/up
+        // all others are not allowed, for example, if moving up, cannot move down.
+
+        char *head;
+        char *tail;
+
+        // right
+        // head = body.front();
+
+        // if (*(head + 1) == 'x')
+        //     head -= 17;
+        // else
+        //     head++;
+
+        // body.push_front(head);
+
+        // tail = body.back();
+        // *tail = '.';
+
+        // body.pop_back();
+
+        // left
+        //  head = body.front();
+
+        // if (*(head - 1) == 'x')
+        //     head += 17;
+        // else
+        //     head--;
+
+        // body.push_front(head);
+
+        // tail = body.back();
+        // *tail = '.';
+
+        // body.pop_back();
+
+        // down
+        // head = body.front();
+
+        // if (*(head + 20) == 'x')
+        // //17*20=340
+        // //. rindu skaits*platums
+        //     head -= 340;
+        // else
+        //     head+=20;
+
+        // body.push_front(head);
+
+        // tail = body.back();
+        // *tail = '.';
+
+        // body.pop_back();
+
+        // up
+        head = body.front();
+
+        if (*(head - 20) == 'x')
+            head += 340;
+        else
+            head -= 20;
+
+        body.push_front(head);
+
+        tail = body.back();
+        *tail = '.';
+
+        body.pop_back();
+    }
+};
+
+void draw(char *display[20][20])
+{
     std::string line0 = "";
 
     // convert array to single string
-    for (int i = 0; i < size_y; i++)
+    for (int i = 0; i < 20; i++)
     {
-        for (int j = 0; j < size_x; j++)
+        for (int j = 0; j < 20; j++)
         {
             line0 = line0 + (*display[i][j]) + "  ";
         }
         line0 += "\n";
     }
 
-    // output display array in string line0
+    // output display array in string line
     std::cout << line0 << std::endl;
+    // std::cout.flush();
     // time scale
     std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
     system("CLS");
-    std::cout.flush();
 }
 
 void spawn_fruit(char *display[20][20], bool eaten)
 {
-    int randx = (rand() % (size_x - 1) + 1);
-    int randy = (rand() % (size_y - 1) + 1);
+    int randx = (rand() % (20 - 1) + 1);
+    int randy = (rand() % (20 - 1) + 1);
     *display[randy][randx] = 'o';
     // add so fruit doesnt spawn on snake, that means that is cant also spawn in the same location again.
     // if snake has eaten fruit, spawn another; previous fruit was deleted by snake head.
 }
 
-direction kb_input(){
-    char input='0';
+direction kb_input()
+{
+
+    char input;
 
     if (_kbhit())
     {
-       input = (char)_getch();
+        input = (char)_getch();
     }
 
     switch (input)
@@ -75,32 +191,25 @@ direction kb_input(){
 
     default:
         return ni;
-    } 
+    }
 }
 
-void snake(direction dirctn){
-    /*
-    snake gets directions, then moves. if snake has eaten a fruit then snake lenght++.
-    if snake crashes into itself then game over, return some value
-    move snake trough borders
-    */
-}
-
-void display_fill(char *display[20][20]){
+void display_fill(char *display[20][20])
+{
 
     // draw display borders
-    for (int i = 0; i < size_y; i++)
+    for (int i = 0; i < 20; i++)
     {
         *display[0][i] = 'x';
         *display[i][0] = 'x';
-        *display[size_y - 1][i] = 'x';
-        *display[i][size_y - 1] = 'x';
+        *display[20 - 1][i] = 'x';
+        *display[i][20 - 1] = 'x';
     }
 
     // display fill
-    for (int i = 1; i < size_y - 1; i++)
+    for (int i = 1; i < 20 - 1; i++)
     {
-        for (int j = 1; j < size_x - 1; j++)
+        for (int j = 1; j < 20 - 1; j++)
         {
             *display[i][j] = '.';
         }
@@ -109,28 +218,32 @@ void display_fill(char *display[20][20]){
 
 int main(void)
 {
-    char display[size_y][size_x];
-    char *display_ptr[size_y][size_x];
+    char display[20][20];
+    char *display_ptr[20][20];
 
     // initialize display_ptr
-    for (int i = 0; i < size_y; i++)
+    for (int i = 0; i < 20; i++)
     {
-        for (int j = 0; j < size_x; j++)
+        for (int j = 0; j < 20; j++)
         {
             display_ptr[i][j] = &display[i][j];
         }
     }
 
-    int i = 0;
     // initialize display with 'x' borders and '.' screen
     display_fill(display_ptr);
 
+    // create object of class snake
+    snake snake;
+    snake.add_display(display_ptr);
+    snake.spawn();
+    // obligati
+
     while (1)
     {
-        // std::cout << "frame: " << i++ << std::endl;
         std::cout << kb_input() << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
-        // draw(display_ptr);
-
+        draw(display_ptr);
+        snake.move();
+        snake.draw();
     }
 }
