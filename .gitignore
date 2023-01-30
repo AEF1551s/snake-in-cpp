@@ -1,3 +1,4 @@
+#cmake files
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -10,5 +11,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 build
+
+#excecutable
 main.exe
+
+#vscode files
 .vscode
