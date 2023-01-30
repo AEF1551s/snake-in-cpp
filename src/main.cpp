@@ -7,6 +7,8 @@
 #include <conio.h>
 #include <list>
 
+#include "snake.h"
+
 int time_scale = 100;
 
 enum direction
@@ -16,122 +18,6 @@ enum direction
     left,
     right,
     ni
-};
-
-class snake
-{
-private:
-    std::list<char *> body;
-    char *display_ptr[20][20];
-
-public:
-    void add_display(char *input[20][20])
-    {
-        // add display array so class knows address of every location
-        for (int i = 0; i < 20; i++)
-        {
-            for (int j = 0; j < 20; j++)
-            {
-                display_ptr[i][j] = input[i][j];
-            }
-        }
-    }
-
-    void spawn()
-    {
-        // body.push_front(display_ptr[rand() % 18 + 1][rand() % 18 + 1]);
-        body.push_front(display_ptr[8][8]);
-        body.push_front(display_ptr[7][8]);
-    }
-
-    void grow()
-    {
-        // check if next move is on fruit.
-        // if so then fruit become part of snake
-    }
-
-    void draw()
-    {
-        for (std::list<char *>::iterator ptr = body.begin(); ptr != body.end(); ptr++)
-            **ptr = 'o';
-    }
-
-    void check_collision()
-    {
-        // check collision
-    }
-
-    void move()
-    {
-        // can move down/up only if already is moving left/right
-        // can move left/rifht if only is moving down/up
-        // all others are not allowed, for example, if moving up, cannot move down.
-
-        char *head;
-        char *tail;
-
-        // right
-        // head = body.front();
-
-        // if (*(head + 1) == 'x')
-        //     head -= 17;
-        // else
-        //     head++;
-
-        // body.push_front(head);
-
-        // tail = body.back();
-        // *tail = '.';
-
-        // body.pop_back();
-
-        // left
-        //  head = body.front();
-
-        // if (*(head - 1) == 'x')
-        //     head += 17;
-        // else
-        //     head--;
-
-        // body.push_front(head);
-
-        // tail = body.back();
-        // *tail = '.';
-
-        // body.pop_back();
-
-        // down
-        // head = body.front();
-
-        // if (*(head + 20) == 'x')
-        // //17*20=340
-        // //. rindu skaits*platums
-        //     head -= 340;
-        // else
-        //     head+=20;
-
-        // body.push_front(head);
-
-        // tail = body.back();
-        // *tail = '.';
-
-        // body.pop_back();
-
-        // up
-        head = body.front();
-
-        if (*(head - 20) == 'x')
-            head += 340;
-        else
-            head -= 20;
-
-        body.push_front(head);
-
-        tail = body.back();
-        *tail = '.';
-
-        body.pop_back();
-    }
 };
 
 void draw(char *display[20][20])
@@ -234,8 +120,7 @@ int main(void)
     display_fill(display_ptr);
 
     // create object of class snake
-    snake snake;
-    snake.add_display(display_ptr);
+    snake snake(display_ptr);
     snake.spawn();
 
     direction user_input = right;
