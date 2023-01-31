@@ -9,6 +9,7 @@ private:
     std::list<char *> body;
     char *display_ptr[20][20];
 
+
 public:
     snake(char *input[20][20])
     {
@@ -25,7 +26,7 @@ public:
     void grow();
     void draw();
     void check_collision();
-    void move();
+    void move(int direction);
 };
 
-#endif 
+#endif

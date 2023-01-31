@@ -135,11 +135,16 @@ int main(void)
         {
             *user_input_ptr = temp;
         }
+        //TODO not allowed reverse movement
+
+        
 
         std::cout << user_input << std::endl;
 
         draw(display_ptr);
-        snake.move();
+
+        snake.move(user_input);
+
         snake.draw();
     }
 }
