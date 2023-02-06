@@ -4,9 +4,9 @@ void snake::spawn()
 {
     body.push_front(display_p[8][8]);
     body.push_front(display_p[7][8]);
-    
-    //update head and tail
-    head=body.front();
+
+    // update head and tail
+    head = body.front();
     tail = body.back();
 }
 void snake::fruit(int r, int c)
@@ -27,22 +27,24 @@ void snake::fruit(int r, int c)
 }
 bool snake::grow(int direction)
 {
-    // TODO change: check if front is fruit, if so return true.
-
     switch (direction)
     {
     case 0:
         if (*(head - 20) == fruit_char || (*(head - 20) == 'x' && *(head + 340) == fruit_char))
             return true;
-    // case 1:
-    //     if (*(head + 20) == fruit_char || (*(head - 20) == 'x' && *(head + 340) == fruit_char))
-    //         return true;
-    // case 2:
-    //     if (*(head - 1) == fruit_char || (*(head - 1) == 'x' && *(head + 17) == fruit_char))
-    //         return true;
-    // case 3:
-    //     if (*(head + 1) == fruit_char || (*(head + 1) == 'x' && *(head - 17) == fruit_char))
-    //         return true;
+        return false;
+    case 1:
+        if (*(head + 20) == fruit_char || (*(head + 20) == 'x' && *(head + 340) == fruit_char))
+            return true;
+        return false;
+    case 2:
+        if (*(head - 1) == fruit_char || (*(head - 1) == 'x' && *(head + 17) == fruit_char))
+            return true;
+        return false;
+    case 3:
+        if (*(head + 1) == fruit_char || (*(head + 1) == 'x' && *(head - 17) == fruit_char))
+            return true;
+        return false;
     default:
         return false;
     }
@@ -54,12 +56,10 @@ void snake::draw()
 }
 void snake::check_collision()
 {
-    // check collision
+    //TODO: add collision
 }
 void snake::move(int direction, bool grow)
 {
-    // TODO if true from snake::grow, then dont remove tail.
-
     switch (direction)
     {
     case 0:
@@ -103,7 +103,6 @@ void snake::move(int direction, bool grow)
         }
 
         break;
-
     case 2:
         // left
         head = body.front();
@@ -123,7 +122,6 @@ void snake::move(int direction, bool grow)
         }
 
         break;
-
     case 3:
         // right
         head = body.front();
@@ -143,7 +141,6 @@ void snake::move(int direction, bool grow)
         }
 
         break;
-
     default:
         break;
     }
