@@ -7,8 +7,11 @@ class snake
 {
 private:
     std::list<char *> body;
-    char *display_ptr[20][20];
-
+    char *head;
+    char *tail;
+    char *display_p[20][20];
+    char body_char = 'o';
+    char fruit_char = '@';
 
 public:
     snake(char *input[20][20])
@@ -18,15 +21,16 @@ public:
         {
             for (int j = 0; j < 20; j++)
             {
-                display_ptr[i][j] = input[i][j];
+                display_p[i][j] = input[i][j];
             }
         }
     }
     void spawn();
-    void grow();
+    void fruit(int r, int c);
+    bool grow(int direction);
     void draw();
     void check_collision();
-    void move(int direction);
+    void move(int direction, bool grow);
 };
 
 #endif

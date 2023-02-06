@@ -1,15 +1,17 @@
 #include <iostream>
 #include <stdlib.h>
+#include <stdio.h>
 #include <cstring>
 #include <chrono>
 #include <thread>
 #include <cstdlib>
 #include <conio.h>
 #include <list>
+#include <time.h>
 
 #include "snake.h"
 
-int time_scale = 100;
+int time_scale = 500;
 
 enum direction
 {
@@ -38,17 +40,8 @@ void draw(char *display[20][20])
     std::cout << line0 << std::endl;
     // std::cout.flush();
     // time scale
-    std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
-    system("CLS");
-}
-
-void spawn_fruit(char *display[20][20], bool eaten)
-{
-    int randx = (rand() % (20 - 1) + 1);
-    int randy = (rand() % (20 - 1) + 1);
-    *display[randy][randx] = 'o';
-    // add so fruit doesnt spawn on snake, that means that is cant also spawn in the same location again.
-    // if snake has eaten fruit, spawn another; previous fruit was deleted by snake head.
+    // std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
+    // system("CLS");
 }
 
 direction kb_input()
@@ -104,47 +97,66 @@ void display_fill(char *display[20][20])
 
 int main(void)
 {
-    char display[20][20];
-    char *display_ptr[20][20];
+    // random seed
+    srand(time(NULL));
 
-    // initialize display_ptr
+    char display[20][20];
+    char *display_p[20][20];
+
+    // initialize display_p
     for (int i = 0; i < 20; i++)
     {
         for (int j = 0; j < 20; j++)
         {
-            display_ptr[i][j] = &display[i][j];
+            display_p[i][j] = &display[i][j];
         }
     }
 
     // initialize display with 'x' borders and '.' screen
-    display_fill(display_ptr);
+    display_fill(display_p);
 
-    // create object of class snake
-    snake snake(display_ptr);
+    snake snake(display_p);
+
+    // first fruit
+    snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
+
     snake.spawn();
 
-    direction user_input = right;
-    direction *user_input_ptr=&user_input;
-    direction temp;
     // obligati
+    direction user_input = up;
+    direction *user_input_p = &user_input;
 
-    while (1)
+    direction prev_user_input;
+    direction *prev_user_input_p = &prev_user_input;
+
+    direction kb_user_input = ni;
+    direction *kb_user_input_p = &kb_user_input;
+
+    while (true)
     {
-        temp = kb_input();
-        if (temp != ni)
-        {
-            *user_input_ptr = temp;
-        }
-        //TODO not allowed reverse movement
 
-        
+        // TODO not allow reverse movement
 
-        std::cout << user_input << std::endl;
 
-        draw(display_ptr);
+        // if (snake.grow(*user_input_p))
+        // {
+        //     snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
+        // }
 
-        snake.move(user_input);
-
+        snake.move(*user_input_p, snake.grow(*user_input_p));
+        system("CLS");
         snake.draw();
+        draw(display_p);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+        *kb_user_input_p = kb_input();
+        if (*kb_user_input_p != ni)
+        {
+            *prev_user_input_p = *user_input_p;
+            *user_input_p = *kb_user_input_p;
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }

@@ -2,31 +2,63 @@
 
 void snake::spawn()
 {
-    body.push_front(display_ptr[8][8]);
-    body.push_front(display_ptr[7][8]);
+    body.push_front(display_p[8][8]);
+    body.push_front(display_p[7][8]);
+    
+    //update head and tail
+    head=body.front();
+    tail = body.back();
 }
-void snake::grow()
+void snake::fruit(int r, int c)
 {
-    // check if next move is on fruit.
-    // if so then fruit become part of snake
+    bool check = true;
+    while (check)
+    {
+        if (*display_p[r][c] != body_char)
+        {
+            *display_p[r][c] = fruit_char;
+            check = false;
+        }
+        else
+        {
+            check = true;
+        }
+    }
+}
+bool snake::grow(int direction)
+{
+    // TODO change: check if front is fruit, if so return true.
+
+    switch (direction)
+    {
+    case 0:
+        if (*(head - 20) == fruit_char || (*(head - 20) == 'x' && *(head + 340) == fruit_char))
+            return true;
+    // case 1:
+    //     if (*(head + 20) == fruit_char || (*(head - 20) == 'x' && *(head + 340) == fruit_char))
+    //         return true;
+    // case 2:
+    //     if (*(head - 1) == fruit_char || (*(head - 1) == 'x' && *(head + 17) == fruit_char))
+    //         return true;
+    // case 3:
+    //     if (*(head + 1) == fruit_char || (*(head + 1) == 'x' && *(head - 17) == fruit_char))
+    //         return true;
+    default:
+        return false;
+    }
 }
 void snake::draw()
 {
-    for (std::list<char *>::iterator ptr = body.begin(); ptr != body.end(); ptr++)
-        **ptr = 'o';
+    for (std::list<char *>::iterator p = body.begin(); p != body.end(); p++)
+        **p = body_char;
 }
 void snake::check_collision()
 {
     // check collision
 }
-void snake::move(int direction)
+void snake::move(int direction, bool grow)
 {
-    // can move down/up only if already is moving left/right
-    // can move left/rifht if only is moving down/up
-    // all others are not allowed, for example, if moving up, cannot move down.
-
-    char *head;
-    char *tail;    
+    // TODO if true from snake::grow, then dont remove tail.
 
     switch (direction)
     {
@@ -42,9 +74,12 @@ void snake::move(int direction)
         body.push_front(head);
 
         tail = body.back();
-        *tail = '.';
+        if (!grow)
+        {
+            *tail = '.';
+            body.pop_back();
+        }
 
-        body.pop_back();
         break;
     case 1:
 
@@ -61,9 +96,12 @@ void snake::move(int direction)
         body.push_front(head);
 
         tail = body.back();
-        *tail = '.';
+        if (!grow)
+        {
+            *tail = '.';
+            body.pop_back();
+        }
 
-        body.pop_back();
         break;
 
     case 2:
@@ -78,9 +116,11 @@ void snake::move(int direction)
         body.push_front(head);
 
         tail = body.back();
-        *tail = '.';
-
-        body.pop_back();
+        if (!grow)
+        {
+            *tail = '.';
+            body.pop_back();
+        }
 
         break;
 
@@ -96,13 +136,15 @@ void snake::move(int direction)
         body.push_front(head);
 
         tail = body.back();
-        *tail = '.';
+        if (!grow)
+        {
+            *tail = '.';
+            body.pop_back();
+        }
 
-        body.pop_back();
         break;
 
     default:
-
         break;
     }
 }
