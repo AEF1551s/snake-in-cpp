@@ -34,7 +34,7 @@ bool snake::grow(int direction)
             return true;
         return false;
     case 1:
-        if (*(head + 20) == fruit_char || (*(head + 20) == 'x' && *(head + 340) == fruit_char))
+        if (*(head + 20) == fruit_char || (*(head + 20) == 'x' && *(head - 340) == fruit_char))
             return true;
         return false;
     case 2:

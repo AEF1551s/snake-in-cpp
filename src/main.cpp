@@ -11,7 +11,8 @@
 
 #include "snake.h"
 
-int time_scale = 500;
+//global clock = time_scale*2
+int time_scale = 100;
 
 enum direction
 {
@@ -122,41 +123,38 @@ int main(void)
 
     snake.spawn();
 
-    // obligati
     direction user_input = up;
     direction *user_input_p = &user_input;
-
-    direction prev_user_input;
-    direction *prev_user_input_p = &prev_user_input;
 
     direction kb_user_input = ni;
     direction *kb_user_input_p = &kb_user_input;
 
+    bool check_grow;
     while (true)
     {
+        //TODO: not allow reverse movement
+        //TODO: add highscores
+        //TODO: add resume
+        //TODO: add colision
+        //TODO: add game over screen
+        
+        check_grow = snake.grow(*user_input_p);
+        snake.move(*user_input_p, check_grow);
+        if (check_grow)
+            snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
 
-        // TODO not allow reverse movement
-
-
-        // if (snake.grow(*user_input_p))
-        // {
-        //     snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
-        // }
-
-        snake.move(*user_input_p, snake.grow(*user_input_p));
+        //REMOVE WHEN DEBUGGING
         system("CLS");
+
         snake.draw();
         draw(display_p);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
 
         *kb_user_input_p = kb_input();
         if (*kb_user_input_p != ni)
-        {
-            *prev_user_input_p = *user_input_p;
             *user_input_p = *kb_user_input_p;
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        
+        std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
     }
 }
