@@ -8,8 +8,10 @@
 #include <conio.h>
 #include <list>
 #include <time.h>
+#include <fstream>
 
 #include "snake.h"
+#include "score.h"
 
 //global clock = time_scale*2
 int time_scale = 100;
@@ -118,6 +120,12 @@ int main(void)
 
     snake snake(display_p);
 
+    std::ofstream file_in;
+    std::ofstream* file_ptr=&file_in;
+    file_in.open("score_log.txt");
+    
+    score score;
+
     // first fruit
     snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
 
@@ -130,6 +138,7 @@ int main(void)
     direction *kb_user_input_p = &kb_user_input;
 
     bool check_grow;
+    
     while (true)
     {
         //TODO: not allow reverse movement
@@ -140,13 +149,18 @@ int main(void)
         
         check_grow = snake.grow(*user_input_p);
         snake.move(*user_input_p, check_grow);
-        if (check_grow)
+        if (check_grow){
             snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
+            score.inc();
+        }
+
 
         //REMOVE WHEN DEBUGGING
         system("CLS");
 
         snake.draw();
+
+        score.print();
         draw(display_p);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
