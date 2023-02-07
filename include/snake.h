@@ -14,17 +14,7 @@ private:
     char fruit_char = '@';
 
 public:
-    snake(char *input[20][20])
-    {
-        // add display array so class knows address of every location
-        for (int i = 0; i < 20; i++)
-        {
-            for (int j = 0; j < 20; j++)
-            {
-                display_p[i][j] = input[i][j];
-            }
-        }
-    }
+    snake(char *input[20][20]);
     void spawn();
     void fruit(int r, int c);
     bool grow(int direction);

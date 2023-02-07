@@ -1,5 +1,17 @@
 #include "snake.h"
 
+snake::snake(char *input[20][20]){
+        {
+        // add display array so class knows address of every location
+        for (int i = 0; i < 20; i++)
+        {
+            for (int j = 0; j < 20; j++)
+            {
+                display_p[i][j] = input[i][j];
+            }
+        }
+    }
+}
 void snake::spawn()
 {
     body.push_front(display_p[8][8]);
