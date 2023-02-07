@@ -13,7 +13,7 @@
 #include "snake.h"
 #include "score.h"
 
-//global clock = time_scale*2
+// global clock = time_scale*2
 int time_scale = 100;
 
 enum direction
@@ -22,7 +22,8 @@ enum direction
     down,
     left,
     right,
-    ni
+    ni,
+    quit
 };
 
 void draw(char *display[20][20])
@@ -70,7 +71,8 @@ direction kb_input()
 
     case 'd':
         return right;
-
+    case 'x':
+        return quit;
     default:
         return ni;
     }
@@ -121,10 +123,8 @@ int main(void)
     snake snake(display_p);
 
     std::ofstream file_in;
-    std::ofstream* file_ptr=&file_in;
-    file_in.open("score_log.txt");
-    
-    score score;
+    std::ifstream file_out;
+    score score(file_in, file_out);
 
     // first fruit
     snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
@@ -138,24 +138,24 @@ int main(void)
     direction *kb_user_input_p = &kb_user_input;
 
     bool check_grow;
-    
+
     while (true)
     {
-        //TODO: not allow reverse movement
-        //TODO: add highscores
-        //TODO: add resume
-        //TODO: add colision
-        //TODO: add game over screen
-        
+        // TODO: not allow reverse movement
+        // TODO: add highscores
+        // TODO: add resume
+        // TODO: add colision
+        // TODO: add game over screen
+
         check_grow = snake.grow(*user_input_p);
         snake.move(*user_input_p, check_grow);
-        if (check_grow){
+        if (check_grow)
+        {
             snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
             score.inc();
         }
 
-
-        //REMOVE WHEN DEBUGGING
+        // REMOVE WHEN DEBUGGING
         system("CLS");
 
         snake.draw();
@@ -168,7 +168,12 @@ int main(void)
         *kb_user_input_p = kb_input();
         if (*kb_user_input_p != ni)
             *user_input_p = *kb_user_input_p;
-        
+
         std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
+        if (*user_input_p == quit)
+        {
+            break;
+        }
     }
+    score.save();
 }
