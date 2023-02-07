@@ -9,14 +9,19 @@ class score
 {
 private:
     int m_score = 0;
-    int highscore;
-    std::string filename;
+    int highscore=0;
+    std::string filename="hscore_log.dat";
+    std::ofstream write;
+    std::ifstream read;
 
 public:
-    // score();
+    std::ofstream in;
+    score(std::ofstream &write, std::ifstream &read);
     void inc();
     void save();
     void print();
+    void reset();
+    std::string get_filename();
     // void check();
 };
 
