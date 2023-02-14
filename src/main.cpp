@@ -142,12 +142,11 @@ int main(void)
     while (true)
     {
         // TODO: not allow reverse movement
-        // TODO: add highscores
-        // TODO: add resume
         // TODO: add colision
         // TODO: add game over screen
+        // TODO: add display class
 
-        check_grow = snake.grow(*user_input_p);
+        check_grow = snake.grow(*user_input_p, false);
         snake.move(*user_input_p, check_grow);
         if (check_grow)
         {
@@ -170,10 +169,15 @@ int main(void)
             *user_input_p = *kb_user_input_p;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
+
         if (*user_input_p == quit)
-        {
+            break;
+        
+        if(snake.grow(*user_input_p, true)){
+            std::cout << "GAME OVER"<< std::endl;
             break;
         }
     }
+
     score.save();
 }
