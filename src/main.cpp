@@ -23,7 +23,8 @@ enum direction
     left,
     right,
     ni,
-    quit
+    quit,
+    reset_score
 };
 
 void draw(char *display[20][20])
@@ -40,12 +41,8 @@ void draw(char *display[20][20])
         line0 += "\n";
     }
 
-    // output display array in string line
-    std::cout << line0 << std::endl;
-    // std::cout.flush();
-    // time scale
-    // std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
-    // system("CLS");
+    std::cout << line0;
+    std::cout.flush();
 }
 
 direction kb_input()
@@ -73,6 +70,8 @@ direction kb_input()
         return right;
     case 'x':
         return quit;
+    case 'r':
+        return reset_score;
     default:
         return ni;
     }
@@ -134,6 +133,9 @@ int main(void)
     direction user_input = up;
     direction *user_input_p = &user_input;
 
+    direction prev_user_input;
+    direction *prev_user_input_p = &prev_user_input;
+
     direction kb_user_input = ni;
     direction *kb_user_input_p = &kb_user_input;
 
@@ -142,7 +144,6 @@ int main(void)
     while (true)
     {
         // TODO: not allow reverse movement
-        // TODO: add game over screen
         // TODO: add display class
 
         check_grow = snake.check_mode(*user_input_p, false);
@@ -151,11 +152,11 @@ int main(void)
         {
             snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
             score.inc();
-            time_scale-=2;
+            time_scale -= 2;
         }
 
         // REMOVE WHEN DEBUGGING
-        system("CLS");
+        // system("CLS");
 
         snake.draw();
 
@@ -166,16 +167,27 @@ int main(void)
 
         *kb_user_input_p = kb_input();
         if (*kb_user_input_p != ni)
+        {
+            *prev_user_input_p = *user_input_p;
             *user_input_p = *kb_user_input_p;
+        }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
 
+        if (snake.check_mode(*user_input_p, true))
+        {
+            // TODO: add game over screen
+            std::cout << "GAME OVER" << std::endl;
+            break;
+        }
+
         if (*user_input_p == quit)
             break;
-        
-        if(snake.check_mode(*user_input_p, true)){
-            std::cout << "GAME OVER"<< std::endl;
-            break;
+
+        if (*user_input_p == reset_score)
+        {
+            score.reset();
+            *user_input_p = *prev_user_input_p;
         }
     }
 

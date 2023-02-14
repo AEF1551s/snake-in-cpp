@@ -2,14 +2,12 @@
 
 snake::snake(char *input[20][20])
 {
+    // add display array so class knows address of every location
+    for (int i = 0; i < 20; i++)
     {
-        // add display array so class knows address of every location
-        for (int i = 0; i < 20; i++)
+        for (int j = 0; j < 20; j++)
         {
-            for (int j = 0; j < 20; j++)
-            {
-                display_p[i][j] = input[i][j];
-            }
+            display_p[i][j] = input[i][j];
         }
     }
 }

@@ -12,7 +12,6 @@ score::score(std::ofstream &write, std::ifstream &read)
         read.close();
     }
 }
-
 void score::inc()
 {
     m_score++;
@@ -24,6 +23,7 @@ void score::print()
         << " "
         << "Highscore:" << highscore
         << std::endl;
+        std::cout.flush();
 }
 void score::save()
 {
@@ -36,7 +36,10 @@ void score::save()
 }
 void score::reset()
 {
-    //TODO: create new file with highscore 0
+    write.open(filename);
+    write << 0;
+    write.close();
+    highscore=0;
 }
 std::string score::get_filename()
 {
