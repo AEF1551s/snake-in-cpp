@@ -142,7 +142,6 @@ int main(void)
     while (true)
     {
         // TODO: not allow reverse movement
-        // TODO: add colision
         // TODO: add game over screen
         // TODO: add display class
 
@@ -152,6 +151,7 @@ int main(void)
         {
             snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
             score.inc();
+            time_scale-=2;
         }
 
         // REMOVE WHEN DEBUGGING

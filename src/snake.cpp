@@ -73,10 +73,6 @@ void snake::draw()
     for (std::list<char *>::iterator p = body.begin(); p != body.end(); p++)
         **p = body_char;
 }
-bool snake::check_collision()
-{
-    return true;
-}
 void snake::move(int direction, bool grow)
 {
     switch (direction)

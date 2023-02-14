@@ -19,7 +19,6 @@ public:
     void fruit(int r, int c);
     bool grow(int direction, bool colision);
     void draw();
-    bool check_collision();
     void move(int direction, bool grow);
 };
 
