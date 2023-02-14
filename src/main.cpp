@@ -145,7 +145,7 @@ int main(void)
         // TODO: add game over screen
         // TODO: add display class
 
-        check_grow = snake.grow(*user_input_p, false);
+        check_grow = snake.check_mode(*user_input_p, false);
         snake.move(*user_input_p, check_grow);
         if (check_grow)
         {
@@ -173,7 +173,7 @@ int main(void)
         if (*user_input_p == quit)
             break;
         
-        if(snake.grow(*user_input_p, true)){
+        if(snake.check_mode(*user_input_p, true)){
             std::cout << "GAME OVER"<< std::endl;
             break;
         }

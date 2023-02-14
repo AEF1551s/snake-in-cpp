@@ -38,7 +38,7 @@ void snake::fruit(int r, int c)
         }
     }
 }
-bool snake::grow(int direction, bool colision)
+bool snake::check_mode(int direction, bool colision)
 {
     char mode;
     if (colision)

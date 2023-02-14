@@ -17,7 +17,7 @@ public:
     snake(char *input[20][20]);
     void spawn();
     void fruit(int r, int c);
-    bool grow(int direction, bool colision);
+    bool check_mode(int direction, bool colision);
     void draw();
     void move(int direction, bool grow);
 };
