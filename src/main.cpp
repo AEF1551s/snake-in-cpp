@@ -133,10 +133,11 @@ int main(void)
     // first fruit
     snake.fruit();
 
+    // TODO:add vector system for moving
     direction user_input = up;
     direction *user_input_p = &user_input;
 
-    direction prev_user_input;
+    direction prev_user_input = up;
     direction *prev_user_input_p = &prev_user_input;
 
     direction kb_user_input = ni;
@@ -145,7 +146,6 @@ int main(void)
     bool check_grow;
     while (true)
     {
-        // TODO: not allow reverse movement
         // TODO: add display class
         check_grow = snake.check_mode(*user_input_p, false);
         snake.move(*user_input_p, check_grow);
@@ -162,22 +162,36 @@ int main(void)
         snake.draw();
 
         score.print();
+        std::cout
+            << "usr_inp: " << *user_input_p << " "
+            << "pre_inp: " << *prev_user_input_p
+            << std::endl;
         draw(display_p);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
 
         *kb_user_input_p = kb_input();
+
         if (*kb_user_input_p != ni)
         {
-            *prev_user_input_p = *user_input_p;
-            *user_input_p = *kb_user_input_p;
+            int test1 = *kb_user_input_p + *user_input_p;
+            int test2 = *kb_user_input_p + *user_input_p;
+            if (*kb_user_input_p + *user_input_p == 1 || *kb_user_input_p + *user_input_p == 5)
+            {
+                // do nothing
+            }
+            else
+            {
+                *prev_user_input_p = *user_input_p;
+                *user_input_p = *kb_user_input_p;
+                *user_input_p = *user_input_p;
+            }
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
 
         if (snake.check_mode(*user_input_p, true))
         {
-            // TODO: add game over screen
             std::cout << "GAME OVER" << std::endl;
             break;
         }
@@ -191,7 +205,7 @@ int main(void)
             score.reset();
             *user_input_p = *prev_user_input_p;
         }
-        //if user input is pause, move and grow methods do nothing, but everything else prints the static display.
+        // if user input is pause, move and grow methods do nothing, but everything else prints the static display.
     }
 
     score.save();
