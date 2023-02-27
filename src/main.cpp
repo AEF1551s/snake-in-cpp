@@ -18,6 +18,7 @@ int time_scale = 100;
 
 //TODO: ADD INPUT CLASS
 //TODO: ADD DISPLAY CLASS
+//TODO: ADD FRUIT CLASS
 enum direction
 {
     up,
