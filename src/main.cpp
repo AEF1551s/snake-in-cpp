@@ -133,7 +133,6 @@ int main(void)
     // first fruit
     snake.fruit();
 
-    // TODO:add vector system for moving
     direction user_input = up;
     direction *user_input_p = &user_input;
 
@@ -160,12 +159,7 @@ int main(void)
         system("CLS");
 
         snake.draw();
-
         score.print();
-        std::cout
-            << "usr_inp: " << *user_input_p << " "
-            << "pre_inp: " << *prev_user_input_p
-            << std::endl;
         draw(display_p);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(time_scale));
@@ -174,8 +168,6 @@ int main(void)
 
         if (*kb_user_input_p != ni)
         {
-            int test1 = *kb_user_input_p + *user_input_p;
-            int test2 = *kb_user_input_p + *user_input_p;
             if (*kb_user_input_p + *user_input_p == 1 || *kb_user_input_p + *user_input_p == 5)
             {
                 // do nothing
@@ -197,9 +189,8 @@ int main(void)
         }
 
         if (*user_input_p == quit)
-        {
             break;
-        }
+
         if (*user_input_p == reset_score)
         {
             score.reset();
@@ -207,6 +198,5 @@ int main(void)
         }
         // if user input is pause, move and grow methods do nothing, but everything else prints the static display.
     }
-
     score.save();
 }
