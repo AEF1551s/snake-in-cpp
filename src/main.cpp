@@ -16,6 +16,8 @@
 // global clock = time_scale*2
 int time_scale = 100;
 
+//TODO: ADD INPUT CLASS
+//TODO: ADD DISPLAY CLASS
 enum direction
 {
     up,
@@ -145,7 +147,6 @@ int main(void)
     bool check_grow;
     while (true)
     {
-        // TODO: add display class
         check_grow = snake.check_mode(*user_input_p, false);
         snake.move(*user_input_p, check_grow);
         if (check_grow)
