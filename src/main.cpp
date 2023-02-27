@@ -24,7 +24,8 @@ enum direction
     right,
     ni,
     quit,
-    reset_score
+    reset_score,
+    pause
 };
 
 void draw(char *display[20][20])
@@ -72,6 +73,8 @@ direction kb_input()
         return quit;
     case 'r':
         return reset_score;
+    case 'p':
+        return pause;
     default:
         return ni;
     }
