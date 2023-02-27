@@ -1,6 +1,6 @@
 #include "snake.h"
 
-snake::snake(char *input[20][20])
+snake::snake(char *input[20][20], bool seeded)
 {
     // add display array so class knows address of every location
     for (int i = 0; i < 20; i++)
@@ -10,36 +10,52 @@ snake::snake(char *input[20][20])
             display_p[i][j] = input[i][j];
         }
     }
+
+    // rand seed
+    if (!seeded)
+    {
+        srand(time(NULL));
+        seeded = true;
+    }
 }
 void snake::spawn()
 {
-    body.push_front(display_p[7][8]);
-    body.push_front(display_p[8][8]);
+    body.push_front(display_p[1][1]);
+    body.push_front(display_p[1][2]);
+    // body.push_front(display_p[7][8]);
+    // body.push_front(display_p[8][8]);
 
     // update head and tail
     head = body.front();
     tail = body.back();
 }
-void snake::fruit(int r, int c)
+void snake::init_fruit_table()
 {
-    bool check = true;
-    while (check)
+    fruit_table.clear();
+
+    for (int i = 1; i < 20 - 1; i++)
     {
-        if (*display_p[r][c] != body_char)
+        for (int j = 1; j < 20 - 1; j++)
         {
-            *display_p[r][c] = fruit_char;
-            check = false;
-        }
-        else
-        {
-            check = true;
+            if (*display_p[i][j] != 'x' && *display_p[i][j] != body_char)
+            {
+                fruit_table.push_back(display_p[i][j]);
+            }
         }
     }
 }
-bool snake::check_mode(int direction, bool colision)
+
+void snake::fruit()
+{
+    init_fruit_table();
+    int size = fruit_table.size();
+    int ran_int = rand() % size;
+    *fruit_table.at(ran_int) = '@';
+}
+bool snake::check_mode(int direction, bool colision_mode)
 {
     char mode;
-    if (colision)
+    if (colision_mode)
         mode = body_char;
     else
         mode = fruit_char;

@@ -122,16 +122,16 @@ int main(void)
     // initialize display with 'x' borders and '.' screen
     display_fill(display_p);
 
-    snake snake(display_p);
+    snake snake(display_p, false);
 
     std::ofstream file_in;
     std::ifstream file_out;
     score score(file_in, file_out);
 
-    // first fruit
-    snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
-
     snake.spawn();
+
+    // first fruit
+    snake.fruit();
 
     direction user_input = up;
     direction *user_input_p = &user_input;
@@ -143,23 +143,21 @@ int main(void)
     direction *kb_user_input_p = &kb_user_input;
 
     bool check_grow;
-
     while (true)
     {
         // TODO: not allow reverse movement
         // TODO: add display class
-
         check_grow = snake.check_mode(*user_input_p, false);
         snake.move(*user_input_p, check_grow);
         if (check_grow)
         {
-            snake.fruit(rand() % 18 + 1, rand() % 18 + 1);
+            snake.fruit();
             score.inc();
             time_scale -= 2;
         }
 
         // REMOVE WHEN DEBUGGING
-        // system("CLS");
+        system("CLS");
 
         snake.draw();
 
@@ -185,13 +183,15 @@ int main(void)
         }
 
         if (*user_input_p == quit)
+        {
             break;
-
+        }
         if (*user_input_p == reset_score)
         {
             score.reset();
             *user_input_p = *prev_user_input_p;
         }
+        //if user input is pause, move and grow methods do nothing, but everything else prints the static display.
     }
 
     score.save();
